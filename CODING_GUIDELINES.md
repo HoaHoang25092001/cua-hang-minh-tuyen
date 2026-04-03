@@ -109,6 +109,14 @@ export const revalidate = 3600; // ISR: revalidate sau 1 giờ
 export const dynamic = "force-dynamic";
 ```
 
+### Dynamic – Trang chủ và các trang fetch DB trực tiếp
+```tsx
+// Bất kỳ Server Component nào fetch data từ Prisma mà cần dữ liệu mới nhất
+// (trang chủ, sản phẩm nổi bật...) PHẢI khai báo force-dynamic trên Vercel.
+// Không khai báo → Next.js cache tĩnh lúc build → dữ liệu cũ không cập nhật.
+export const dynamic = "force-dynamic";
+```
+
 ---
 
 ## Database (Prisma 7)
@@ -145,6 +153,33 @@ type ProductWithCategory = Prisma.ProductGetPayload<{
 ---
 
 ## Authentication
+
+### Auth.js v5 – Split-config pattern (bắt buộc cho Vercel Edge)
+
+Auth.js v5 mã hóa JWT bằng JWE (encrypted). `getToken()` từ `next-auth/jwt` chỉ
+đọc được JWT signed (JWS từ v4) → **không hoạt động trên production**.
+
+Dùng split-config để middleware dùng được Edge Runtime:
+
+- **`lib/auth.config.ts`** – Chỉ chứa `session`, `callbacks`, `pages`. **Không import** `prisma` hay `bcrypt`.
+- **`lib/auth.ts`** – Import `authConfig` + thêm `providers` (có dùng prisma/bcrypt).
+- **`middleware.ts`** – `const { auth } = NextAuth(authConfig)` → `export default auth(handler)`.
+
+```ts
+// middleware.ts – đúng cách với Auth.js v5
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
+
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+  const role = (req.auth?.user as any)?.role;
+  if (!req.auth || role !== "ADMIN") {
+    return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
+  }
+  return NextResponse.next();
+});
+```
 
 ```ts
 // Lấy session trong Server Component

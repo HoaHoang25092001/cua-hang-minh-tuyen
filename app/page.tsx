@@ -1,4 +1,8 @@
 // app/page.tsx – Trang chủ cửa hàng Minh Tuyến
+// force-dynamic: trang chủ fetch dữ liệu từ DB (sản phẩm nổi bật, danh mục, đánh giá)
+// không được cache tĩnh trên Vercel — phải luôn render server-side để cập nhật ngay
+export const dynamic = "force-dynamic";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Tag, Phone, Mail, MapPin, CheckCircle } from "lucide-react";

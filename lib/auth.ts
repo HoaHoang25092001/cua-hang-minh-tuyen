@@ -1,9 +1,11 @@
-// lib/auth.ts - Auth.js v5 Credentials provider
+// lib/auth.ts – Auth.js v5 full config (Node runtime only – có prisma + bcryptjs)
+// Callbacks, session strategy, và pages được chia sẻ từ lib/auth.config.ts
+// để middleware (Edge) có thể dùng cùng cấu hình mà không import Node-only deps.
 import NextAuth from "next-auth";
-import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
+import { authConfig } from "./auth.config";
 
 declare module "next-auth" {
   interface Session {
@@ -22,7 +24,8 @@ declare module "next-auth" {
   }
 }
 
-const config: NextAuthConfig = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -50,25 +53,4 @@ const config: NextAuthConfig = {
       },
     }),
   ],
-  session: { strategy: "jwt" },
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token["id"] = user.id as string;
-        token["username"] = user.username;
-        token["role"] = user.role;
-      }
-      return token;
-    },
-    session({ session, token }) {
-      session.user.id = token["id"] as string;
-      session.user.username = token["username"] as string;
-      session.user.role = token["role"] as "ADMIN" | "CUSTOMER";
-      return session;
-    },
-  },
-  pages: { signIn: "/login", error: "/login" },
-  secret: process.env.AUTH_SECRET,
-};
-
-export const { handlers, auth, signIn, signOut } = NextAuth(config);
+});

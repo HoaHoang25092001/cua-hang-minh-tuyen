@@ -43,6 +43,7 @@
 - [ ] Test CRUD Category, Product, Manufacturer, Review
 - [ ] Kiểm tra middleware redirect khi chưa login
 - [x] **Fix lỗi Prisma validation hiển thị raw error**: dùng `hooks.beforeDb` + `HookError` để bắt thiếu field bắt buộc (`name`, `slug`, `price`) và trả về thông báo tiếng Việt thay vì dump lỗi Prisma thô
+- [x] **Fix Admin không login được trên Vercel** (03/04/2026): chuyển middleware từ `getToken()` (next-auth/jwt v4 – chỉ đọc JWS) sang `auth` wrapper của Auth.js v5 (đọc được JWE encrypted). Tạo `lib/auth.config.ts` (edge-safe, không có prisma/bcrypt) và split từ `lib/auth.ts`.
 
 ### 1.2 Cải thiện next-admin options
 - [ ] Add i18n tiếng Việt (xem `next-admin.js.org/docs/i18n`)
@@ -92,7 +93,7 @@
   - 3 ảnh/hàng trên desktop (lg), 1 ảnh/hàng trên mobile – hiệu ứng hover overlay
   - Component: `components/shop/about-gallery.tsx` (Client Component)
 - [x] Danh mục sản phẩm: 3 cột desktop / 1 cột mobile, ảnh default nếu null
-- [x] Sản phẩm nổi bật (isFeatured = true, SSR)
+- [x] Sản phẩm nổi bật (isFeatured = true, SSR + `dynamic = "force-dynamic"` fix – 03/04/2026)
 - [x] Section đánh giá cửa hàng (marquee ticker từ trái sang phải)
 - [x] Form gửi đánh giá khách hàng
 - [x] About summary section (bản đồ + danh sách điểm mạnh + CTA)
@@ -168,7 +169,9 @@
 ## 🚀 Deployment
 
 - [ ] Thêm `AUTH_SECRET` production (dùng `openssl rand -base64 32`)
-- [ ] Đặt `NEXTAUTH_URL` = domain chính thức
+- [ ] Đặt `AUTH_URL` = domain chính thức (ví dụ: `https://your-app.vercel.app`) – cần thiết cho Auth.js v5 trên Vercel
+- [x] Fix middleware Auth.js v5 (encrypted JWT, split-config pattern) – 03/04/2026
+- [x] Fix homepage static caching – thêm `dynamic = "force-dynamic"` – 03/04/2026
 - [ ] Deploy lên Vercel
 - [ ] Test production với Neon database
 

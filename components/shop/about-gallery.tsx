@@ -32,7 +32,7 @@ const HIGHLIGHTS = [
   {
     icon: Truck,
     title: "Giao hàng nhanh chóng",
-    desc: "Giao tận nơi trong huyện Cam Lộ và các khu vực lân cận tại Quảng Trị",
+    desc: "Giao tận nơi trong huyện Lệ Thủy và các khu vực lân cận tại Quảng Trị (Quảng Bình cũ)",
   },
 ];
 
@@ -109,7 +109,7 @@ export function AboutGallery() {
             nước, điện dân dụng, đồ nghề biển, vật tư thủy sản và dụng cụ xây
             dựng tại{" "}
             <strong className="text-green-700">
-              Thôn 2 Thanh Mỹ, xã Cam Hồng, tỉnh Quảng Trị
+              Thôn 2 Thanh Mỹ, xã Cam Hồng, tỉnh Quảng Trị (Quảng Bình cũ)
             </strong>
             . Với hơn 10 năm kinh nghiệm, chúng tôi cam kết mang đến sản phẩm
             chất lượng, giá minh bạch và dịch vụ tận tâm – để mỗi bà con đều
