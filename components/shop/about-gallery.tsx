@@ -5,12 +5,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Store, Shield, ThumbsUp, Truck, ChevronLeft, ChevronRight } from "lucide-react";
 
 const GALLERY_IMAGES = [
-  { src: "/images/Image.jfif", alt: "Cửa hàng Minh Tuyến" },
-  { src: "/images/Image%20(1).jfif", alt: "Kho hàng đa dạng" },
-  { src: "/images/Image%20(2).jfif", alt: "Vật tư chất lượng" },
-  { src: "/images/Image%20(3).jfif", alt: "Phục vụ tận tâm" },
-  { src: "/images/Image%20(4).jfif", alt: "Đội ngũ nhiệt huyết" },
-  { src: "/images/Image%20(5).jfif", alt: "Sản phẩm phong phú" },
+  { src: "/images/image-0.jpg", alt: "Cửa hàng Minh Tuyến" },
+  { src: "/images/image-1.jpg", alt: "Kho hàng đa dạng" },
+  { src: "/images/image-2.jpg", alt: "Vật tư chất lượng" },
+  { src: "/images/image-3.jpg", alt: "Phục vụ tận tâm" },
+  { src: "/images/image-4.jpg", alt: "Đội ngũ nhiệt huyết" },
+  { src: "/images/image-5.jpg", alt: "Sản phẩm phong phú" },
 ];
 
 const HIGHLIGHTS = [
